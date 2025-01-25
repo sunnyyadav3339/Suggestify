@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestify - Laptops</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-family: 'Georgia', serif;
+            font-size: 36px;
+            color: #ff6f61;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #1e1e2e;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input, select {
+            background-color: #2c2c3c;
+            color: #fff;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e55d50;
+        }
+
+        .output-panel {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #2c2c3c;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Laptop Finder</h1>
+    <form id="laptopForm">
+        <label for="price">Enter Your Budget (e.g., 50000):</label>
+        <input type="number" id="price" name="price" placeholder="Enter budget in your currency" required>
+
+        <label for="yesOrNo">Do you need a high-performance laptop? (yes/no):</label>
+        <select id="yesOrNo" name="yesOrNo" required>
+            <option value="">-- Select Option --</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <button type="button" onclick="findLaptop()">Find Laptop</button>
+    </form>
+
+    <div id="output" class="output-panel" style="display: none;">
+        <h2>Recommended Laptops:</h2>
+        <p id="outputContent"></p>
+    </div>
+
+    <script>
+        function findLaptop() {
+            const price = document.getElementById('price').value;
+            const yesOrNo = document.getElementById('yesOrNo').value;
+            const output = document.getElementById('output');
+            const outputContent = document.getElementById('outputContent');
+
+            if (!price || !yesOrNo) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            // Log the data being sent
+            console.log('Sending data:', { price, yesOrNo });
+
+            // Make sure we're sending JSON with the correct headers
+            fetch('http://127.0.0.1:5000/find-laptop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Ensure JSON content type
+                },
+                body: JSON.stringify({
+                    price: price,
+                    yesOrNo: yesOrNo
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Error response:', text);  // Log the error response (HTML)
+                        throw new Error('Failed to fetch laptop recommendations');
+                    });
+                }
+                return response.json();  // Parse the response as JSON
+            })
+            .then(data => {
+                console.log('Response data:', data);  // Log the entire response to check its structure
+
+                const recommendations = data.laptopRecommendations;
+
+                // Assuming recommendations contain a 'result' property with the laptop list
+                if (recommendations && recommendations.result) {
+                    // Directly insert the result string into the output content
+                    outputContent.innerHTML = recommendations.result.replace(/\n/g, '<br>');  // Replace newlines with <br> for formatting
+                } else {
+                    outputContent.textContent = 'No recommendations available.';
+                }
+
+                output.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching recommendations:', error);
+                outputContent.textContent = 'Error fetching recommendations.';
+                output.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>

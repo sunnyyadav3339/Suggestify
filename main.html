@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestify - Explore</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-family: 'Georgia', serif;
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 20px;
+        }
+
+        .icon-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: #333;
+            width: 100px; /* Added fixed width to ensure alignment */
+            height: 125px; /* Ensure the height accommodates both image and text */
+        }
+
+        .icon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .icon-card span {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Ensures the links do not have any default styling */
+        .icon-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Make sure the grid is responsive on smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: grey;">
+    <h1 style="color: black;">Explore Categories</h1>
+    <div class="container">
+        <div class="icon-card">
+            <a href="mv3.html">
+                <img src="movies.jpg" alt="Movies">
+                <span>Movies</span>
+            </a>
+        </div>
+        <div class="icon-card">
+            <a href="music_finder.html">
+                <img src="Miles Morales.jpg" alt="Songs">
+                <span>Songs</span>
+            </a>
+        </div>
+        <div class="icon-card">
+            <a href="find_laptop.html">
+                <img src="laptop.jpg" alt="Laptops">
+                <span>Laptops</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+
+
